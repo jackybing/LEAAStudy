@@ -31,8 +31,7 @@
 		</property>
 		<property name="packagesToScan">
 			<list>
-				<value>com.leaa.model.user</value>
-				<value>com.leaa.model.address</value>
+				<value>com.leaa.model.*</value>				
 			</list>
 		</property>
 	</bean>

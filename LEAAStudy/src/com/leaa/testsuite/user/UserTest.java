@@ -1,5 +1,7 @@
 package com.leaa.testsuite.user;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import org.hibernate.SessionFactory;
@@ -12,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.leaa.model.address.Address;
+import com.leaa.model.order.Order;
 import com.leaa.model.user.User;
 import com.sun.org.apache.xpath.internal.Expression;
 
@@ -28,6 +31,7 @@ public class UserTest {
 	@AfterClass
 	public static void destroy(){
 		ctx=null;
+		session.flush();
 		session.close();
 	}
 	
@@ -68,7 +72,7 @@ public class UserTest {
 		Assert.assertNotNull(address);
 	}
 	
-	@Test
+	@Ignore
 	public void testModidyAddressForUser(){
 		User user=(User)session.load(User.class,2);
 		
@@ -76,6 +80,28 @@ public class UserTest {
 		
 		user.setAddress(address);
 		session.update(user);
-		session.flush();
+	}
+	
+	@Test
+	public void testCreateOrderForUser(){
+		User user=(User)session.load(User.class,2);
+		
+		Order order=new Order();
+		order.setOrderName("basketball");
+		
+		
+		user.getOrders().add(order);
+		order.setUser(user);
+		
+		session.save(order);
+		session.update(user);
+	}
+	
+	@Ignore
+	public void testRemoveOrderForUser(){
+		User user=(User)session.load(User.class,1);
+		
+		Order order=user.getOrders().get(0);
+		session.delete(order);
 	}
 }

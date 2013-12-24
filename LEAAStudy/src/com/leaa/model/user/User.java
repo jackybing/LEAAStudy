@@ -1,6 +1,7 @@
 package com.leaa.model.user;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,10 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.leaa.model.address.Address;
+import com.leaa.model.order.Order;
 
 
 @Entity
@@ -26,8 +30,7 @@ public class User  implements Serializable {
 	private String name;
 	private int age;
 	
-	
-
+	private List<Order> orders;
 	
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="address")
@@ -65,8 +68,19 @@ public class User  implements Serializable {
 		return age;
 	}
 	
-	
 	public void setAge(int age) {
 		this.age = age;
 	}
+
+	@OneToMany(mappedBy="user")
+	@OrderBy("orderName")//集合中心订单名称进行排序
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	
+	
 }
