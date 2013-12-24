@@ -1,5 +1,6 @@
 package com.leaa.testsuite.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.leaa.model.address.Address;
+import com.leaa.model.cart.Cart;
 import com.leaa.model.order.Order;
 import com.leaa.model.user.User;
 import com.sun.org.apache.xpath.internal.Expression;
@@ -82,7 +84,7 @@ public class UserTest {
 		session.update(user);
 	}
 	
-	@Test
+	@Ignore
 	public void testCreateOrderForUser(){
 		User user=(User)session.load(User.class,2);
 		
@@ -103,5 +105,31 @@ public class UserTest {
 		
 		Order order=user.getOrders().get(0);
 		session.delete(order);
+	}
+	
+	@Test
+	public void testCreateCartsForUser(){
+		//多对多时，要生成两者的关联关系时，需要通过owner方来完成,另外owner必须是已经存在的实体，不能是也是新增实体。
+		//User user=(User)session.load(User.class,1);
+		User user=new User();
+		user.setName("xym");
+		user.setAge(21);
+		
+		Cart cart=(Cart)session.load(Cart.class, 6);
+		
+		cart.getUsers().add(user);
+			
+	}
+	
+	@Ignore
+	public void testRemoveCartsForUser(){
+		//删除多对多关联时，需要通过owner来删除关联
+		User user=(User)session.load(User.class,1);
+		
+		Cart cart=(Cart)session.load(Cart.class, 6);
+		
+		cart.getUsers().remove(0);
+		session.saveOrUpdate(cart);
+				
 	}
 }

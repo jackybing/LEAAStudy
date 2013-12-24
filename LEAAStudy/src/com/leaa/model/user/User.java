@@ -1,6 +1,7 @@
 package com.leaa.model.user;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,12 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.leaa.model.address.Address;
+import com.leaa.model.cart.Cart;
 import com.leaa.model.order.Order;
 
 
@@ -31,6 +34,8 @@ public class User  implements Serializable {
 	private int age;
 	
 	private List<Order> orders;
+	
+	private List<Cart> carts;
 	
 	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="address")
@@ -80,6 +85,19 @@ public class User  implements Serializable {
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+	
+	@ManyToMany(
+		cascade= CascadeType.ALL,
+		mappedBy="users",
+		targetEntity=Cart.class
+	)
+	public List<Cart> getCarts() {
+		return carts;
+	}
+
+	public void setCarts(List<Cart> carts) {
+		this.carts = carts;
 	}
 	
 	
